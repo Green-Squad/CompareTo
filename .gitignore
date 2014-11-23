@@ -45,4 +45,4 @@ IOS/www/
 .Trashes
 
 # Platforms
-#/platforms/*
+/platforms/*
