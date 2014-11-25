@@ -49,3 +49,6 @@ IOS/www/
 
 # C9
 .c9/*
+
+# Webstorm
+/.idea
