@@ -46,3 +46,6 @@ IOS/www/
 
 # Platforms
 /platforms/*
+
+# Webstorm
+/.idea
