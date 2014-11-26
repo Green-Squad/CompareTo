@@ -41,7 +41,15 @@ var app = {
             tx.executeSql('CREATE TABLE IF NOT EXISTS objects (id INTEGER UNIQUE PRIMARY KEY, name TEXT)');
             tx.executeSql('CREATE TABLE IF NOT EXISTS metric_object (id INTEGER UNIQUE PRIMARY KEY, metric_id INTEGER, object_id INTEGER, value INTEGER, FOREIGN KEY (metric_id) REFERENCES Metrics (id)), FOREIGN KEY (object_id) REFERENCES Objects (id))');
             tx.executeSql('INSERT INTO metrics (id, name) VALUES (1, "Speed")');
-            console.log(tx.executeSql('SELECT * FROM metrics'));
+            tx.executeSql('INSERT INTO metrics (id, name) VALUES (2, "Weight")');
+            tx.executeSql('INSERT INTO metrics (id, name) VALUES (3, "Smell")');
+
+
+            tx.executeSql("SELECT * FROM metrics;", [], function(tx, res) {
+                for (i = 0; i < res.rows.length; i++) {
+                    console.log("res.rows.item(i)")
+                }
+            });
         });
     },
     // Update DOM on a Received Event
