@@ -33,7 +33,6 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        var metrics = [];
         var db = window.sqlitePlugin.openDatabase({
             name: "compareto.db"
         });
@@ -47,13 +46,11 @@ var app = {
 
 
             tx.executeSql("SELECT * FROM metrics;", [], function(tx, res) {
-                for (var i = 0; i < res.rows.length; i++) {
-                    metrics[i] = res.rows.item(i);
+                for (i = 0; i < res.rows.length; i++) {
+                    console.log(res.rows.item(i))
                 }
             });
         });
-        
-        console.log(metrics);
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
