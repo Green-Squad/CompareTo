@@ -47,7 +47,7 @@ var app = {
 
             tx.executeSql("SELECT * FROM metrics;", [], function(tx, res) {
                 for (i = 0; i < res.rows.length; i++) {
-                    console.log("res.rows.item(i)")
+                    console.log(res.rows.item(i))
                 }
             });
         });
