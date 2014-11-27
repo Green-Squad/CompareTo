@@ -77,10 +77,17 @@ app.loadMetrics = function() {
 app.loadObjects = function() {
 
     var addObjects = function(row) {
-        var option = document.createElement("option");
-        option.text = row.object_id; // change to object name
-        option.value = row.object_id;
-        document.getElementById("object-1").add(option);
+        var option1 = document.createElement("option");
+        option1.text = row.object_id; // change to object name
+        option1.value = row.object_id;
+
+        document.getElementById("object-1").add(option1);
+
+        var option2 = document.createElement("option");
+        option2.text = row.object_id; // change to object name
+        option2.value = row.object_id;
+
+        document.getElementById("object-2").add(option2);
     }
 
     var renderObjects = function(tx, res) {
@@ -88,13 +95,17 @@ app.loadObjects = function() {
             console.log(res.rows.item(i));
             addObjects(res.rows.item(i));
         }
-        document.getElementById("object-2").innerHTML = document.getElementById("object-1").innerHTML;
+        //document.getElementById("object-2").innerHTML = document.getElementById("object-1").innerHTML;
     }
 
     var metricID = $('#comparison-type').val();
+    //document.getElementById("object-1-container").innerHTML = "<select name='object-1' id='object-1'><option value='' disabled>Choose an object to compare</option></select>";
+    //document.getElementById("object-2-container").innerHTML = "<select name='object-2' id='object-2'><option value='' disabled>Choose an object to compare</option></select>";
+
     document.getElementById("object-1").innerHTML = "<option value='' disabled>Choose an object to compare</option>";
-    $('#object-1-container').show();
-    $('#object-2-container').show();
+    document.getElementById("object-2").innerHTML = "<option value='' disabled>Choose an object to compare</option>";
+    $("#object-1-button").find('span').text("Choose an object to compare");
+    $("#object-2-button").find('span').text("Choose an object to compare");
 
     var db = app.db;
     db.transaction(function(tx) {
