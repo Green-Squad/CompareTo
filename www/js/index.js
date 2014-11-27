@@ -107,12 +107,22 @@ app.loadObjects = function() {
     if ($('#objects-container').hasClass('hidden')) {
         $('#objects-container').show();
     }
+
     var db = app.db;
     db.transaction(function(tx) {
         tx.executeSql("SELECT * FROM metric_object JOIN objects ON objects.id = metric_object.object_id WHERE metric_id = ?", [metricID],
             renderObjects,
             app.onError);
     });
+}
+
+// Only shows the submit button if both object selects have a selected option
+app.loadSubmit = function () {
+    if ($('#object-1').val() == null || $('#object-2').val() == null) {
+        $('#submit-button-container').hide();
+    } else {
+        $('#submit-button-container').show();
+    }
 }
 
 function init() {
@@ -124,4 +134,8 @@ function init() {
 
 $("#comparison-type").change(function() {
     app.loadObjects();
+});
+
+$("select").change(function () {
+    app.loadSubmit();
 });
