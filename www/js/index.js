@@ -95,18 +95,18 @@ app.loadObjects = function() {
             console.log(res.rows.item(i));
             addObjects(res.rows.item(i));
         }
-        //document.getElementById("object-2").innerHTML = document.getElementById("object-1").innerHTML;
     }
 
     var metricID = $('#comparison-type').val();
-    //document.getElementById("object-1-container").innerHTML = "<select name='object-1' id='object-1'><option value='' disabled>Choose an object to compare</option></select>";
-    //document.getElementById("object-2-container").innerHTML = "<select name='object-2' id='object-2'><option value='' disabled>Choose an object to compare</option></select>";
 
     document.getElementById("object-1").innerHTML = "<option value='' disabled>Choose an object to compare</option>";
     document.getElementById("object-2").innerHTML = "<option value='' disabled>Choose an object to compare</option>";
     $("#object-1-button").find('span').text("Choose an object to compare");
     $("#object-2-button").find('span').text("Choose an object to compare");
 
+    if ($('#objects-container').hasClass('hidden')) {
+        $('#objects-container').show();
+    }
     var db = app.db;
     db.transaction(function(tx) {
         tx.executeSql("SELECT * FROM metric_object WHERE metric_id = ?", [metricID],
