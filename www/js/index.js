@@ -78,13 +78,13 @@ app.loadObjects = function() {
 
     var addObjects = function(row) {
         var option1 = document.createElement("option");
-        option1.text = row.object_id; // change to object name
+        option1.text = row.name; 
         option1.value = row.object_id;
 
         document.getElementById("object-1").add(option1);
 
         var option2 = document.createElement("option");
-        option2.text = row.object_id; // change to object name
+        option2.text = row.name;
         option2.value = row.object_id;
 
         document.getElementById("object-2").add(option2);
@@ -109,7 +109,7 @@ app.loadObjects = function() {
     }
     var db = app.db;
     db.transaction(function(tx) {
-        tx.executeSql("SELECT * FROM metric_object WHERE metric_id = ?", [metricID],
+        tx.executeSql("SELECT * FROM metric_object JOIN objects ON objects.id = metric_object.object_id WHERE metric_id = ?", [metricID],
             renderObjects,
             app.onError);
     });
