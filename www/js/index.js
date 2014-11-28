@@ -140,9 +140,49 @@ $("select").change(function () {
     app.loadSubmit();
 });
 
-$(document).on('pagebeforeshow', '#animation', function(e, data){
-    $('#animation').find('.ui-content').html("");
-    $('#animation').find('.ui-content').append("<p>Object 1 ID: " + data.prevPage.find('#object-1').val() + "</p>");
-    $('#animation').find('.ui-content').append("<p>Object 2 ID: " + data.prevPage.find('#object-2').val() + "</p>");
-    $('#animation').find('.ui-content').append("<p>Metric ID: " + data.prevPage.find('#comparison-type').val() + "</p>");
+$(document).on('pagebeforehide', '#home', function(e, data){
+
+    console.log("pagebeforehide");
+    var getObject1Value = function(tx, res) {
+        gObject1Value = res.rows.item(0).value;
+        console.log("object1Value: " + gObject1Value)
+    }
+
+    var getObject2Value = function(tx, res) {
+        gObject2Value = res.rows.item(0).value;
+        console.log("object2Value: " + gObject2Value)
+    }
+
+    gMetricID = $('#comparison-type').val();
+    gObject1ID = $('#object-1').val();
+    gObject2ID = $('#object-2').val();
+
+
+
+    var db = app.db;
+    db.transaction(function(tx) {
+        tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject1ID, gMetricID],
+            getObject1Value,
+            app.onError);
+        tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject2ID, gMetricID],
+            getObject2Value,
+            app.onError);
+    });
+
+
 });
+
+$(document).on('pageshow', '#animation', function(e, data) {
+    console.log("paeshow");
+    $('#animation').find('.ui-content').html("");
+    $('#animation').find('.ui-content').append("<p>Object 1 ID: " + gObject1ID + " / Value: " + gObject1Value + "</p>");
+    $('#animation').find('.ui-content').append("<p>Object 2 ID: " + gObject2ID + " / Value: " + gObject2Value + "</p>");
+    $('#animation').find('.ui-content').append("<p>Metric ID: " + gMetricID + "</p>");
+});
+
+var gObject1ID;
+var gObject2ID;
+var gObject1Value;
+var gObject2Value;
+var gMetricID;
+
