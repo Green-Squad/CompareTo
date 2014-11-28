@@ -20,8 +20,6 @@ app.createTables = function() {
     });
 }
 
-
-
 app.seedTables = function() {
     var db = app.db;
     db.transaction(function(tx) {
@@ -143,25 +141,25 @@ $("select").change(function () {
 $(document).on('pagebeforehide', '#home', function(e, data){
     console.log("pagebeforehide");
     var getObject1Value = function(tx, res) {
-        gObject1Value = res.rows.item(0).value;
-        console.log("object1Value: " + gObject1Value)
+        gObject1.value = res.rows.item(0).value;
+        console.log("object1Value: " + gObject1.value)
     }
 
     var getObject2Value = function(tx, res) {
-        gObject2Value = res.rows.item(0).value;
-        console.log("object2Value: " + gObject2Value)
+        gObject2.value = res.rows.item(0).value;
+        console.log("object2Value: " + gObject2.value)
     }
 
     gMetricID = $('#comparison-type').val();
-    gObject1ID = $('#object-1').val();
-    gObject2ID = $('#object-2').val();
+    gObject1.id = $('#object-1').val();
+    gObject2.id = $('#object-2').val();
 
     var db = app.db;
     db.transaction(function(tx) {
-        tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject1ID, gMetricID],
+        tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject1.id, gMetricID],
             getObject1Value,
             app.onError);
-        tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject2ID, gMetricID],
+        tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject2.id, gMetricID],
             getObject2Value,
             app.onError);
     });
@@ -171,15 +169,41 @@ $(document).on('pagebeforehide', '#home', function(e, data){
 $(document).on('pageshow', '#animation', function(e, data) {
     console.log("paeshow");
     $('#animation').find('.ui-content').html("");
-    $('#animation').find('.ui-content').append("<p>Object 1 ID: " + gObject1ID + " / Value: " + gObject1Value + "</p>");
-    $('#animation').find('.ui-content').append("<p>Object 2 ID: " + gObject2ID + " / Value: " + gObject2Value + "</p>");
     $('#animation').find('.ui-content').append("<p>Metric ID: " + gMetricID + "</p>");
 
     var speed = function() {
-        $('#animation').find('.ui-content').append("<div class='box' id='object-1-model'></div>");
-        $('#animation').find('.ui-content').append("<div class='box' id='object-2-model'></div>");
-        $('#object-1-model').transition({ y: gObject1Value + 'px' });
-        $('#object-2-model').transition({ y: gObject2Value + 'px' });
+
+        var speedBase = 2000;
+        var distance = '-' + $(window).height() * (3/4) + 'px';
+
+        var animate = function(max, min) {
+
+            $('#animation').find('.ui-content').append("<div class='box' id='left-object' style='left: " + parseInt($(window).width() / 4) + "px;'><p>ID: " + max.id + " / Value: " + max.value + "</p></div>");
+            $('#animation').find('.ui-content').append("<div class='box' id='right-object' style='right: " + parseInt($(window).width() / 4) + "px;'><p>ID: " + min.id + " / Value: " + min.value + "</p></div>");
+
+            var valRatio = max.value / min.value;
+            var slowSpeed = speedBase * valRatio;
+
+            $('#left-object').transition({
+                y: distance,
+                easing: 'linear',
+                duration: speedBase
+            });
+            $('#right-object').transition({
+                y: distance,
+                easing: 'linear',
+                duration: slowSpeed
+            });
+        }
+
+        if (gObject1.value >= gObject2.value) {
+            animate(gObject1, gObject2)
+        } else {
+            animate(gObject2, gObject1)
+        }
+
+
+
     }
 
     var weight = function () {
@@ -199,9 +223,8 @@ $(document).on('pageshow', '#animation', function(e, data) {
     }
 });
 
-var gObject1ID;
-var gObject2ID;
-var gObject1Value;
-var gObject2Value;
 var gMetricID;
 
+var gObject1 = {};
+var gObject2 = {};
+var gMetric = {};
