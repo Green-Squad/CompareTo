@@ -139,3 +139,10 @@ $("#comparison-type").change(function() {
 $("select").change(function () {
     app.loadSubmit();
 });
+
+$(document).on('pagebeforeshow', '#animation', function(e, data){
+    $('#animation').find('.ui-content').html("");
+    $('#animation').find('.ui-content').append("<p>Object 1 ID: " + data.prevPage.find('#object-1').val() + "</p>");
+    $('#animation').find('.ui-content').append("<p>Object 2 ID: " + data.prevPage.find('#object-2').val() + "</p>");
+    $('#animation').find('.ui-content').append("<p>Metric ID: " + data.prevPage.find('#comparison-type').val() + "</p>");
+});
