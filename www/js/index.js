@@ -123,63 +123,20 @@ app.loadSubmit = function () {
     }
 }
 
-function init() {
-    app.openDb();
-    app.createTables();
-    app.seedTables();
-    app.loadMetrics();
-}
-
-$("#comparison-type").change(function() {
-    app.loadObjects();
-});
-
-$("select").change(function () {
-    app.loadSubmit();
-});
-
-$(document).on('pagebeforehide', '#home', function(e, data){
-    console.log("pagebeforehide");
-    var getObject1Value = function(tx, res) {
-        gObject1.value = res.rows.item(0).value;
-        console.log("object1Value: " + gObject1.value)
-    }
-
-    var getObject2Value = function(tx, res) {
-        gObject2.value = res.rows.item(0).value;
-        console.log("object2Value: " + gObject2.value)
-    }
-
-    gMetricID = $('#comparison-type').val();
-    gObject1.id = $('#object-1').val();
-    gObject2.id = $('#object-2').val();
-
-    var db = app.db;
-    db.transaction(function(tx) {
-        tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject1.id, gMetricID],
-            getObject1Value,
-            app.onError);
-        tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject2.id, gMetricID],
-            getObject2Value,
-            app.onError);
-    });
-});
-
-// pageshow event comes after pagebeforehide, so the variables have values
-$(document).on('pageshow', '#animation', function(e, data) {
+app.showAnimation = function () {
     console.log("paeshow");
     $('#animation').find('.ui-content').html("");
     $('#animation').find('.ui-content').append("<p>Metric ID: " + gMetricID + "</p>");
 
     var speed = function() {
 
-        var speedBase = 2000;
+        var speedBase = 1500;
         var distance = '-' + $(window).height() * (3/4) + 'px';
 
         var animate = function(max, min) {
 
-            $('#animation').find('.ui-content').append("<div class='box' id='left-object' style='left: " + parseInt($(window).width() / 4) + "px;'><p>ID: " + max.id + " / Value: " + max.value + "</p></div>");
-            $('#animation').find('.ui-content').append("<div class='box' id='right-object' style='right: " + parseInt($(window).width() / 4) + "px;'><p>ID: " + min.id + " / Value: " + min.value + "</p></div>");
+            $('#animation').find('.ui-content').append("<div class='box' id='left-object' style='left: " + parseInt($(window).width() / 4) + "px;'><p><i class=' fa fa-plane fa-4'></i> ID: " + max.id + " / Value: " + max.value + "</p></div>");
+            $('#animation').find('.ui-content').append("<div class='box' id='right-object' style='right: " + parseInt($(window).width() / 4) + "px;'><p><i class=' fa fa-twitter fa-4'></i>ID: " + min.id + " / Value: " + min.value + "</p></div>");
 
             var valRatio = max.value / min.value;
             var slowSpeed = speedBase * valRatio;
@@ -220,6 +177,63 @@ $(document).on('pageshow', '#animation', function(e, data) {
         weight();
     } else if (gMetricID == 3) {
         height();
+    }
+}
+
+function init() {
+    app.openDb();
+    app.createTables();
+    app.seedTables();
+    app.loadMetrics();
+}
+
+$("#comparison-type").change(function() {
+    app.loadObjects();
+});
+
+$("select").change(function () {
+    app.loadSubmit();
+});
+
+$(document).on('pagebeforehide', '#home', function(e, data){
+    console.log("pagebeforehide");
+    var getObject1Value = function(tx, res) {
+        gObject1.value = res.rows.item(0).value;
+        console.log("object1Value: " + gObject1.value)
+    }
+
+    var getObject2Value = function(tx, res) {
+        gObject2.value = res.rows.item(0).value;
+        console.log("object2Value: " + gObject2.value)
+    }
+
+    gMetricID = $('#comparison-type').val();
+    gObject1.id = $('#object-1').val();
+    gObject2.id = $('#object-2').val();
+
+    var db = app.db;
+    db.transaction(function(tx) {
+        tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject1.id, gMetricID],
+            getObject1Value,
+            app.onError);
+        tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject2.id, gMetricID],
+            getObject2Value,
+            app.onError);
+    });
+
+    $('#animation').find('.ui-content').html("");
+});
+
+// pageshow event comes after pagebeforehide, so the variables have values
+$(document).on('pageshow', '#animation', function(e, data) {
+    app.showAnimation();
+});
+
+$(window).on("orientationchange", function(event) {
+    if ($.mobile.activePage.attr("id") == "animation") {
+        window.onresize = function() {
+            app.showAnimation();
+        }
     }
 });
 
