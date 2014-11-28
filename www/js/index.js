@@ -28,7 +28,7 @@ app.seedTables = function() {
         // Seeding metrics
         tx.executeSql('INSERT INTO metrics (id, name) VALUES (1, "Speed")');
         tx.executeSql('INSERT INTO metrics (id, name) VALUES (2, "Weight")');
-        tx.executeSql('INSERT INTO metrics (id, name) VALUES (3, "Smell")');
+        tx.executeSql('INSERT INTO metrics (id, name) VALUES (3, "Height")');
 
         // Seeding objects
         tx.executeSql('INSERT INTO objects (id, name) VALUES (1, "Bird")');
@@ -141,7 +141,6 @@ $("select").change(function () {
 });
 
 $(document).on('pagebeforehide', '#home', function(e, data){
-
     console.log("pagebeforehide");
     var getObject1Value = function(tx, res) {
         gObject1Value = res.rows.item(0).value;
@@ -157,8 +156,6 @@ $(document).on('pagebeforehide', '#home', function(e, data){
     gObject1ID = $('#object-1').val();
     gObject2ID = $('#object-2').val();
 
-
-
     var db = app.db;
     db.transaction(function(tx) {
         tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject1ID, gMetricID],
@@ -168,16 +165,38 @@ $(document).on('pagebeforehide', '#home', function(e, data){
             getObject2Value,
             app.onError);
     });
-
-
 });
 
+// pageshow event comes after pagebeforehide, so the variables have values
 $(document).on('pageshow', '#animation', function(e, data) {
     console.log("paeshow");
     $('#animation').find('.ui-content').html("");
     $('#animation').find('.ui-content').append("<p>Object 1 ID: " + gObject1ID + " / Value: " + gObject1Value + "</p>");
     $('#animation').find('.ui-content').append("<p>Object 2 ID: " + gObject2ID + " / Value: " + gObject2Value + "</p>");
     $('#animation').find('.ui-content').append("<p>Metric ID: " + gMetricID + "</p>");
+
+    var speed = function() {
+        $('#animation').find('.ui-content').append("<div class='box' id='object-1-model'></div>");
+        $('#animation').find('.ui-content').append("<div class='box' id='object-2-model'></div>");
+        $('#object-1-model').transition({ y: gObject1Value + 'px' });
+        $('#object-2-model').transition({ y: gObject2Value + 'px' });
+    }
+
+    var weight = function () {
+
+    }
+
+    var height = function () {
+
+    }
+
+    if (gMetricID == 1) {
+        speed();
+    } else if (gMetricID == 2) {
+        weight();
+    } else if (gMetricID == 3) {
+        height();
+    }
 });
 
 var gObject1ID;
