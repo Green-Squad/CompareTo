@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.greensquad.compareto" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>CompareTo</name>
+    <name>Compare To</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        A fun application to demonstrate comparisons of different things.
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="gscoders@gmail.com" href="">
+        Green Squad
     </author>
     <content src="index.html" />
     <access origin="*" />
