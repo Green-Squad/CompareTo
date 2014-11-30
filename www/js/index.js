@@ -15,7 +15,7 @@ app.createTables = function() {
     var db = app.db;
     db.transaction(function(tx) {
         tx.executeSql('CREATE TABLE IF NOT EXISTS metrics (id INTEGER UNIQUE PRIMARY KEY, name TEXT)');
-        tx.executeSql('CREATE TABLE IF NOT EXISTS objects (id INTEGER UNIQUE PRIMARY KEY, name TEXT)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS objects (id INTEGER UNIQUE PRIMARY KEY, name TEXT, icon TEXT, color TEXT)');
         tx.executeSql('CREATE TABLE IF NOT EXISTS metric_object (metric_id INTEGER, object_id INTEGER, value INTEGER, FOREIGN KEY (metric_id) REFERENCES Metrics (id), FOREIGN KEY (object_id) REFERENCES Objects (id))');
     });
 }
@@ -29,9 +29,9 @@ app.seedTables = function() {
         tx.executeSql('INSERT INTO metrics (id, name) VALUES (3, "Height")');
 
         // Seeding objects
-        tx.executeSql('INSERT INTO objects (id, name) VALUES (1, "Bird")');
-        tx.executeSql('INSERT INTO objects (id, name) VALUES (2, "Plane")');
-        tx.executeSql('INSERT INTO objects (id, name) VALUES (3, "Superman")');
+        tx.executeSql('INSERT INTO objects (id, name, icon, color) VALUES (1, "Bird", "twitter", "blue")');
+        tx.executeSql('INSERT INTO objects (id, name, icon, color) VALUES (2, "Plane", "plane", "grey")');
+        tx.executeSql('INSERT INTO objects (id, name, icon, color) VALUES (3, "Superman", "male", "red")');
 
         // Seeding metric_object
         tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (1, 1, 10)');      // Metric 1 = Speed, Object 1 = Bird
@@ -124,19 +124,19 @@ app.loadSubmit = function () {
 }
 
 app.showAnimation = function () {
-    console.log("paeshow");
     $('#animation').find('.ui-content').html("");
-    $('#animation').find('.ui-content').append("<p>Metric ID: " + gMetricID + "</p>");
+    $('#animation').find('.ui-content').append("<h2>" + gMetricID + "</h2>");
 
     var speed = function() {
 
         var speedBase = 1500;
-        var distance = '-' + $(window).height() * (3/4) + 'px';
+        var distance = '-' + $(window).height() * (3/5) + 'px';
 
         var animate = function(max, min) {
 
-            $('#animation').find('.ui-content').append("<div class='box' id='left-object' style='left: " + parseInt($(window).width() / 4) + "px;'><p><i class=' fa fa-plane fa-4'></i> ID: " + max.id + " / Value: " + max.value + "</p></div>");
-            $('#animation').find('.ui-content').append("<div class='box' id='right-object' style='right: " + parseInt($(window).width() / 4) + "px;'><p><i class=' fa fa-twitter fa-4'></i>ID: " + min.id + " / Value: " + min.value + "</p></div>");
+            $('#animation').find('.ui-content').append("<div class='box' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i class=' fa fa-" +
+max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.value + " mph</p></div>");
+            $('#animation').find('.ui-content').append("<div class='box' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i class=' fa fa-" + min.icon + " fa-4 " + min.color +"'></i></p><p>" + min.name + "</p><p>" + min.value + " mph</p></div>");
 
             var valRatio = max.value / min.value;
             var slowSpeed = speedBase * valRatio;
@@ -196,15 +196,18 @@ $("select").change(function () {
 });
 
 $(document).on('pagebeforehide', '#home', function(e, data){
-    console.log("pagebeforehide");
     var getObject1Value = function(tx, res) {
         gObject1.value = res.rows.item(0).value;
-        console.log("object1Value: " + gObject1.value)
+        gObject1.icon = res.rows.item(0).icon;
+        gObject1.color = res.rows.item(0).color;
+        gObject1.name = res.rows.item(0).name;
     }
 
     var getObject2Value = function(tx, res) {
         gObject2.value = res.rows.item(0).value;
-        console.log("object2Value: " + gObject2.value)
+        gObject2.icon = res.rows.item(0).icon;
+        gObject2.color = res.rows.item(0).color;
+        gObject2.name = res.rows.item(0).name;
     }
 
     gMetricID = $('#comparison-type').val();
@@ -212,11 +215,12 @@ $(document).on('pagebeforehide', '#home', function(e, data){
     gObject2.id = $('#object-2').val();
 
     var db = app.db;
+    var query = "SELECT * FROM metric_object JOIN objects ON objects.id = metric_object.object_id WHERE object_id = ? AND metric_id = ?";
     db.transaction(function(tx) {
-        tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject1.id, gMetricID],
+        tx.executeSql(query, [gObject1.id, gMetricID],
             getObject1Value,
             app.onError);
-        tx.executeSql("SELECT * FROM metric_object WHERE object_id = ? AND metric_id = ?", [gObject2.id, gMetricID],
+        tx.executeSql(query, [gObject2.id, gMetricID],
             getObject2Value,
             app.onError);
     });
