@@ -182,6 +182,8 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
 
             if(valRatio == 1) {
                 degrees = 0;
+            } else {
+                degrees = 25;
             }
 
             $('#animation').find('.ui-content').append("<div class='weight-bar'></div>");
@@ -191,9 +193,9 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
             var count = 0;
             var seesaw = setInterval(function(){
                 if(count < 2) {
-                    $(".weight-bar").transition({ rotate: '60deg' }, 1000, 'cubic-bezier(.43,0,.45,1)');
+                    $(".weight-bar").transition({ rotate: degrees + 'deg' }, 1000, 'cubic-bezier(.43,0,.45,1)');
                     setTimeout(function(){
-                        $(".weight-bar").transition({ rotate: '-60deg' }, 1000, 'cubic-bezier(.43,0,.45,1)');
+                        $(".weight-bar").transition({ rotate: '-' + degrees + 'deg' }, 1000, 'cubic-bezier(.43,0,.45,1)');
                     }, 100);
                 } else {
                     clearInterval(seesaw);
