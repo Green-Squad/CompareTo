@@ -193,8 +193,8 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
             }
 
             $('#animation').find('.ui-content').append("<div class='weight-bar'></div>");
-            $('#animation').find('.weight-bar').append("<div class='size-object' id='left-object'><p><i id='left-icon' class='fa-4 fa fa-" + max.icon + " " + max.color + "'></i></p><p>" + max.name + "</p><p>" + max.value + " lbs</p></div>");
-            $('#animation').find('.weight-bar').append("<div class='size-object' id='right-object'><p><i id='right-icon' class='fa-4 fa fa-" + min.icon + " " + min.color +"'></i></p><p>" + min.name + "</p><p>" + min.value + " lbs</p></div>");
+            $('#animation').find('.weight-bar').append("<div class='weight-object' id='left-object'><p><i id='left-icon' class='fa-4 fa fa-" + max.icon + " " + max.color + "'></i></p><p>" + max.name + "</p><p>" + max.value + " lbs</p></div>");
+            $('#animation').find('.weight-bar').append("<div class='weight-object' id='right-object'><p><i id='right-icon' class='fa-4 fa fa-" + min.icon + " " + min.color +"'></i></p><p>" + min.name + "</p><p>" + min.value + " lbs</p></div>");
 
             playAudio('weight');
 
