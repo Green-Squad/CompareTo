@@ -57,13 +57,12 @@
         "com.brodysoft.sqlitePlugin": {
             "PACKAGE_NAME": "com.greensquad.compareto"
         },
+        "org.apache.cordova.file": {
+            "PACKAGE_NAME": "com.greensquad.compareto"
+        },
         "org.apache.cordova.media": {
             "PACKAGE_NAME": "com.greensquad.compareto"
         }
     },
-    "dependent_plugins": {
-        "org.apache.cordova.file": {
-            "PACKAGE_NAME": "com.greensquad.compareto"
-        }
-    }
+    "dependent_plugins": {}
 }

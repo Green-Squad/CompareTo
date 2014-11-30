@@ -280,8 +280,8 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
 
 function init() {
     app.openDb();
-    app.createTables();
-    app.seedTables();
+    //app.createTables();
+    //app.seedTables();
     app.loadMetrics();
 }
 
@@ -350,6 +350,95 @@ function playAudio(audioName) {
     var media = new Media(getAppPath() + "audio/" + audioName + ".mp3");
     media.play();
 }
+
+$('#delete-button').on('click', function(event) {
+    window.sqlitePlugin.deleteDatabase("compareto.db");
+})
+
+$('#update-button').on('click', function(event) {
+
+    var complete = function() {
+        console.log( "complete" );
+        completeCount++;
+
+        if (completeCount == 3) {
+
+            if (successCount == 3) {
+                alert('Successfully updated database.')
+            } else {
+                alert('There was an error updating the database. Please try again.')
+            }
+
+        }
+    };
+
+    app.db = window.sqlitePlugin.openDatabase({name: "compareto.db"});
+    var db = app.db;
+    db.transaction(function(tx) {
+        tx.executeSql('CREATE TABLE IF NOT EXISTS metrics (id INTEGER UNIQUE PRIMARY KEY, name TEXT)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS objects (id INTEGER UNIQUE PRIMARY KEY, name TEXT, icon TEXT, color TEXT)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS metric_object (metric_id INTEGER, object_id INTEGER, value INTEGER, FOREIGN KEY (metric_id) REFERENCES Metrics (id), FOREIGN KEY (object_id) REFERENCES Objects (id))');
+    });
+
+    var successCount = 0;
+    var errorCount = 0;
+    var completeCount = 0;
+
+    // metrics json
+    $.getJSON( "https://guarded-reef-6440.herokuapp.com/metrics.json", function( data ) {
+        db.transaction(function(tx) {
+            for (var i = 0; i < data.length; i++) {
+                var query = 'INSERT INTO metrics (id, name) VALUES (' + data[i].id + ', "' + data[i].name +'")';
+                console.log(query);
+                tx.executeSql(query);
+            }
+        });
+    }).done(function() {
+        console.log( "success" );
+        successCount++;
+    }).fail(function() {
+        console.log( "error" );
+        errorCount++;
+    }).always(complete);
+
+    // objects json
+    $.getJSON( "https://guarded-reef-6440.herokuapp.com/comparison_objects.json", function( data ) {
+        db.transaction(function(tx) {
+            for (var i = 0; i < data.length; i++) {
+                var query = 'INSERT INTO objects (id, name, icon, color) VALUES (' + data[i].id + ', "' + data[i].name + '", "'+ data[i].icon + '", "' + data[i].color + '")';
+                console.log(query);
+                tx.executeSql(query);
+            }
+        });
+    }).done(function() {
+        console.log( "success" );
+        successCount++;
+    }).fail(function() {
+        console.log( "error" );
+        errorCount++;
+    }).always(complete);
+
+    // metric_objects json
+    $.getJSON( "https://guarded-reef-6440.herokuapp.com/metric_objects.json", function( data ) {
+        db.transaction(function(tx) {
+            for (var i = 0; i < data.length; i++) {
+                var query = 'INSERT INTO metric_object (metric_id, object_id, value) VALUES (' + data[i].metric_id + ', ' + data[i].comparison_object_id + ', ' + data[i].value +')';
+                console.log(query);
+                tx.executeSql(query);
+            }
+        });
+    }).done(function() {
+        console.log( "success" );
+        successCount++;
+    }).fail(function() {
+        console.log( "error" );
+        errorCount++;
+    }).always(complete);
+
+    app.loadMetrics();
+
+
+})
 
 var gObject1 = {};
 var gObject2 = {};
