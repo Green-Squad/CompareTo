@@ -148,6 +148,8 @@ app.showAnimation = function () {
 max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.value + " mph</p></div>");
             $('#animation').find('.ui-content').append("<div class='speed-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i class=' fa fa-" + min.icon + " fa-4 " + min.color +"'></i></p><p>" + min.name + "</p><p>" + min.value + " mph</p></div>");
 
+            playAudio('speed');
+
             var valRatio = min.value / max.value;
             var speedFast = speedSlow * valRatio;
 
@@ -169,8 +171,6 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
             animate(gObject2, gObject1)
         }
 
-
-
     }
 
     var weight = function () {
@@ -182,13 +182,21 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
 
             if(valRatio == 1) {
                 degrees = 0;
+            } else if (valRatio <= 0.25) {
+                degrees = 60;
+            } else if (valRatio <= 0.50) {
+                degrees = 40;
+            } else if (valRatio <= 0.75) {
+                degrees = 20;
             } else {
-                degrees = 25;
+                degrees = 5;
             }
 
             $('#animation').find('.ui-content').append("<div class='weight-bar'></div>");
             $('#animation').find('.weight-bar').append("<div class='size-object' id='left-object'><p><i id='left-icon' class='fa-4 fa fa-" + max.icon + " " + max.color + "'></i></p><p>" + max.name + "</p><p>" + max.value + " lbs</p></div>");
             $('#animation').find('.weight-bar').append("<div class='size-object' id='right-object'><p><i id='right-icon' class='fa-4 fa fa-" + min.icon + " " + min.color +"'></i></p><p>" + min.name + "</p><p>" + min.value + " lbs</p></div>");
+
+            playAudio('weight');
 
             var count = 0;
             var seesaw = setInterval(function(){
@@ -225,6 +233,8 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
 
             $('#animation').find('.ui-content').append("<div class='size-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i id='left-icon' class='fa fa-" + min.icon + " " + min.color + "' style='font-size: " + parseInt(sizeSmall) + "px'></i></p><p>" + min.name + "</p><p>" + min.value + " feet</p></div>");
             $('#animation').find('.ui-content').append("<div class='size-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i id='right-icon' class='fa fa-" + max.icon + " " + max.color + "' style='font-size: " + parseInt(sizeLarge) + "px'></i></p><p>" + max.name + "</p><p>" + max.value + " feet</p></div>");
+
+            playAudio('size');
 
             // zoom transition is initially set to 0 ms
             zoom.to({
@@ -329,6 +339,17 @@ $(window).on("orientationchange", function(event) {
         }
     }
 });
+
+function getAppPath() {
+    var path = window.location.pathname;
+    path = path.substr( path, path.length - 10 );
+    return 'file://' + path;
+};
+
+function playAudio(audioName) {
+    var media = new Media(getAppPath() + "audio/" + audioName + ".mp3");
+    media.play();
+}
 
 var gObject1 = {};
 var gObject2 = {};
