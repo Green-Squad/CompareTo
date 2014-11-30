@@ -125,7 +125,7 @@ app.loadSubmit = function () {
 
 app.showAnimation = function () {
     $('#animation').find('.ui-content').html("");
-    $('#animation').find('.ui-content').append("<div class=""><h1>" + gMetric.name + "</h1></div>");
+    $('#animation').find('.ui-content').append("<div class='center'><h1>" + gMetric.name + "</h1></div>");
 
     var speed = function() {
 
@@ -143,12 +143,12 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
 
             $('#left-object').transition({
                 y: distance,
-                easing: 'linear',
+                easing: 'cubic-bezier(.24,.01,.47,1)',
                 duration: speedBase
             });
             $('#right-object').transition({
                 y: distance,
-                easing: 'linear',
+                easing: 'cubic-bezier(.24,.01,.47,1)',
                 duration: slowSpeed
             });
         }
@@ -211,7 +211,7 @@ $(document).on('pagebeforehide', '#home', function(e, data){
     }
 
     gMetric.id = $('#comparison-type').val();
-    gMetric.name = $('#comparison-type').text();
+    gMetric.name = $('#comparison-type option:selected').text();
     gObject1.id = $('#object-1').val();
     gObject2.id = $('#object-2').val();
 
