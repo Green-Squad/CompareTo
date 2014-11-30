@@ -193,8 +193,8 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
             }
 
             $('#animation').find('.ui-content').append("<div class='weight-bar'></div>");
-            $('#animation').find('.weight-bar').append("<div class='size-object' id='left-object'><p><i id='left-icon' class='fa-4 fa fa-" + max.icon + " " + max.color + "'></i></p><p>" + max.name + "</p><p>" + max.value + " lbs</p></div>");
-            $('#animation').find('.weight-bar').append("<div class='size-object' id='right-object'><p><i id='right-icon' class='fa-4 fa fa-" + min.icon + " " + min.color +"'></i></p><p>" + min.name + "</p><p>" + min.value + " lbs</p></div>");
+            $('#animation').find('.weight-bar').append("<div class='weight-object' id='left-object'><p><i id='left-icon' class='fa-4 fa fa-" + max.icon + " " + max.color + "'></i></p><p>" + max.name + "</p><p>" + max.value + " lbs</p></div>");
+            $('#animation').find('.weight-bar').append("<div class='weight-object' id='right-object'><p><i id='right-icon' class='fa-4 fa fa-" + min.icon + " " + min.color +"'></i></p><p>" + min.name + "</p><p>" + min.value + " lbs</p></div>");
 
             playAudio('weight');
 
@@ -283,6 +283,7 @@ function init() {
     //app.createTables();
     //app.seedTables();
     app.loadMetrics();
+    document.addEventListener("backbutton", onBackKeyDown, false);
 }
 
 $("#comparison-type").change(function() {
@@ -344,11 +345,27 @@ function getAppPath() {
     var path = window.location.pathname;
     path = path.substr( path, path.length - 10 );
     return 'file://' + path;
-};
+}
 
 function playAudio(audioName) {
-    var media = new Media(getAppPath() + "audio/" + audioName + ".mp3");
-    media.play();
+    mediaPlayer = new Media(getAppPath() + "audio/" + audioName + ".mp3");
+    mediaPlayer.play();
+}
+
+function stopAudio() {
+    if(undefined != mediaPlayer) {
+        mediaPlayer.stop();
+    }
+}
+
+function onBackKeyDown() {
+    stopAudio();
+    if($.mobile.activePage.is('#home')) {
+        navigator.app.exitApp();
+    }
+    else {
+        navigator.app.backHistory()
+    }
 }
 
 $('#delete-button').on('click', function(event) {
@@ -371,7 +388,7 @@ $('#update-button').on('click', function(event) {
 
         }
     };
-
+    window.sqlitePlugin.deleteDatabase("compareto.db");
     app.db = window.sqlitePlugin.openDatabase({name: "compareto.db"});
     var db = app.db;
     db.transaction(function(tx) {
@@ -440,6 +457,7 @@ $('#update-button').on('click', function(event) {
 
 })
 
+var mediaPlayer = '';
 var gObject1 = {};
 var gObject2 = {};
 var gMetric = {};

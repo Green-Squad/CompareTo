@@ -12,7 +12,15 @@
 }
 
 .size-object {
-    width: 40%;
+    width: 30%;
+    height: 0;
+    overflow: visible;
+    position: absolute;
+    text-align: center;
+}
+
+.size-object {
+    width: 30%;
     height: 0;
     overflow: visible;
     position: absolute;
