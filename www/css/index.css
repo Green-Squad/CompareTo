@@ -13,6 +13,10 @@
     overflow-x: visible;
 }
 
+.center {
+    text-align: center;
+}
+
 .fa-1 {
     font-size: 1em;
 }

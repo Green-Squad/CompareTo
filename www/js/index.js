@@ -125,7 +125,7 @@ app.loadSubmit = function () {
 
 app.showAnimation = function () {
     $('#animation').find('.ui-content').html("");
-    $('#animation').find('.ui-content').append("<h2>" + gMetricID + "</h2>");
+    $('#animation').find('.ui-content').append("<div class=""><h1>" + gMetric.name + "</h1></div>");
 
     var speed = function() {
 
@@ -171,11 +171,11 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
 
     }
 
-    if (gMetricID == 1) {
+    if (gMetric.id == 1) {
         speed();
-    } else if (gMetricID == 2) {
+    } else if (gMetric.id == 2) {
         weight();
-    } else if (gMetricID == 3) {
+    } else if (gMetric.id == 3) {
         height();
     }
 }
@@ -210,17 +210,18 @@ $(document).on('pagebeforehide', '#home', function(e, data){
         gObject2.name = res.rows.item(0).name;
     }
 
-    gMetricID = $('#comparison-type').val();
+    gMetric.id = $('#comparison-type').val();
+    gMetric.name = $('#comparison-type').text();
     gObject1.id = $('#object-1').val();
     gObject2.id = $('#object-2').val();
 
     var db = app.db;
     var query = "SELECT * FROM metric_object JOIN objects ON objects.id = metric_object.object_id WHERE object_id = ? AND metric_id = ?";
     db.transaction(function(tx) {
-        tx.executeSql(query, [gObject1.id, gMetricID],
+        tx.executeSql(query, [gObject1.id, gMetric.id],
             getObject1Value,
             app.onError);
-        tx.executeSql(query, [gObject2.id, gMetricID],
+        tx.executeSql(query, [gObject2.id, gMetric.id],
             getObject2Value,
             app.onError);
     });
@@ -241,7 +242,6 @@ $(window).on("orientationchange", function(event) {
     }
 });
 
-var gMetricID;
 
 var gObject1 = {};
 var gObject2 = {};
