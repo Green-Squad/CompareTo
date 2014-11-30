@@ -283,6 +283,7 @@ function init() {
     app.createTables();
     app.seedTables();
     app.loadMetrics();
+    document.addEventListener("backbutton", onBackKeyDown, false);
 }
 
 $("#comparison-type").change(function() {
@@ -344,13 +345,30 @@ function getAppPath() {
     var path = window.location.pathname;
     path = path.substr( path, path.length - 10 );
     return 'file://' + path;
-};
-
-function playAudio(audioName) {
-    var media = new Media(getAppPath() + "audio/" + audioName + ".mp3");
-    media.play();
 }
 
+function playAudio(audioName) {
+    mediaPlayer = new Media(getAppPath() + "audio/" + audioName + ".mp3");
+    mediaPlayer.play();
+}
+
+function stopAudio() {
+    if(undefined != mediaPlayer) {
+        mediaPlayer.stop();
+    }
+}
+
+function onBackKeyDown() {
+    stopAudio();
+    if($.mobile.activePage.is('#home')) {
+        navigator.app.exitApp();
+    }
+    else {
+        navigator.app.backHistory()
+    }
+}
+
+var mediaPlayer = '';
 var gObject1 = {};
 var gObject2 = {};
 var gMetric = {};
