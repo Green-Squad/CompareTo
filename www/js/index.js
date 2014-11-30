@@ -181,8 +181,48 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
 
         var animate = function(max, min) {
 
-            $('#animation').find('.ui-content').append("<div class='size-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i id='left-icon' class=' fa fa-" + min.icon + " " + min.color + "' style='font-size: " + min.value + "px'></i></p><p>" + min.name + "</p><p>" + min.value + " feet</p></div>");
-            $('#animation').find('.ui-content').append("<div class='size-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i id='right-icon' class='  fa fa-" + max.icon + " " + max.color + "' style='font-size: " + max.value + "px'></i></p><p>" + max.name + "</p><p>" + max.value + " feet</p></div>");
+            valRatio = min.value / max.value;
+            sizeLarge = $(window).width()/3;
+            sizeSmall = sizeLarge * valRatio;
+
+            //$('#animation').find('.ui-content').append("<div class='zoomViewport'><div class='zoomContainer'></div></div>");
+            $('#animation').find('.ui-content').append("<div class='size-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i id='left-icon' class='zoomTarget fa fa-" + min.icon + " " + min.color + "' style='font-size: " + parseInt(sizeSmall) + "px'></i></p><p>" + min.name + "</p><p>" + min.value + " feet</p></div>");
+            $('#animation').find('.ui-content').append("<div class='size-object zoomTarget' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i id='right-icon' class='zoomTarget fa fa-" + max.icon + " " + max.color + "' style='font-size: " + parseInt(sizeLarge) + "px'></i></p><p>" + max.name + "</p><p>" + max.value + " feet</p></div>");
+
+            zoom.to({
+                element: document.querySelector( 'i#left-icon' )
+            });
+            //$('body').css('transform', '800ms ease');
+            //$('body').css('-webkit-transform', '800ms ease');
+
+            setTimeout(function() {
+                var TRANSITION_DURATION = 1500;
+                document.body.style.transition = 'transform '+ TRANSITION_DURATION +'ms ease';
+                document.body.style.OTransition = '-o-transform '+ TRANSITION_DURATION +'ms ease';
+                document.body.style.msTransition = '-ms-transform '+ TRANSITION_DURATION +'ms ease';
+                document.body.style.MozTransition = '-moz-transform '+ TRANSITION_DURATION +'ms ease';
+                document.body.style.WebkitTransition = '-webkit-transform '+ TRANSITION_DURATION +'ms ease';
+                zoom.out();
+            }, 1500);
+
+            var TRANSITION_DURATION = 0;
+            document.body.style.transition = 'transform '+ TRANSITION_DURATION +'ms ease';
+            document.body.style.OTransition = '-o-transform '+ TRANSITION_DURATION +'ms ease';
+            document.body.style.msTransition = '-ms-transform '+ TRANSITION_DURATION +'ms ease';
+            document.body.style.MozTransition = '-moz-transform '+ TRANSITION_DURATION +'ms ease';
+            document.body.style.WebkitTransition = '-webkit-transform '+ TRANSITION_DURATION +'ms ease';
+
+
+            //$('#left-icon').zoomTarget();
+            //$('#left-icon').click();
+
+            //$('#left-icon').zoomTo({targetsize:.8, duration:1});
+            //var transformMatrix = $('.zoomContainer').css('transform');
+            //$('.zoomContainer').css('transform', '');
+            //$('.zoomContainer').css('-webkit-transform', '');
+            //$('.zoomContainer').css('transform', transformMatrix);
+
+
         }
 
         if (gObject1.value >= gObject2.value) {
