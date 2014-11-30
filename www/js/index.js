@@ -26,17 +26,27 @@ app.seedTables = function() {
         // Seeding metrics
         tx.executeSql('INSERT INTO metrics (id, name) VALUES (1, "Speed")');
         tx.executeSql('INSERT INTO metrics (id, name) VALUES (2, "Weight")');
-        tx.executeSql('INSERT INTO metrics (id, name) VALUES (3, "Height")');
+        tx.executeSql('INSERT INTO metrics (id, name) VALUES (3, "Size")');
 
         // Seeding objects
-        tx.executeSql('INSERT INTO objects (id, name, icon, color) VALUES (1, "Bird", "twitter", "blue")');
-        tx.executeSql('INSERT INTO objects (id, name, icon, color) VALUES (2, "Plane", "plane", "grey")');
+        tx.executeSql('INSERT INTO objects (id, name, icon, color) VALUES (1, "Bald Eagle", "twitter", "black")');
+        tx.executeSql('INSERT INTO objects (id, name, icon, color) VALUES (2, "Boeing 747", "plane", "grey")');
         tx.executeSql('INSERT INTO objects (id, name, icon, color) VALUES (3, "Superman", "male", "red")');
 
-        // Seeding metric_object
-        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (1, 1, 10)');      // Metric 1 = Speed, Object 1 = Bird
-        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (1, 2, 50)');      // Metric 1 = Speed, Object 2 = Plane
-        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (2, 1, 100)');     // Metric 2 = Weight, Object 1 = Bird
+        // Seeding metric_object speed
+        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (1, 1, 99)');         // Metric 1 = Speed, Object 1 = Bald Eagle
+        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (1, 2, 614)');        // Metric 1 = Speed, Object 2 = Boeing 747
+        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (1, 3, 670616629)');  // Metric 1 = Speed, Object 3 = Superman
+
+        // Seeding metric_object weight
+        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (2, 1, 13)');         // Metric 2 = Weight, Object 1 = Bald Eagle
+        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (2, 2, 892450)');     // Metric 2 = Weight, Object 2 = Boeing 747
+        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (2, 3, 235)');        // Metric 2 = Weight, Object 3 = Superman
+
+        // Seeding metric_object size
+        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (3, 1, 7.08)');       // Metric 2 = Size, Object 1 = Bald Eagle
+        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (3, 2, 231.1)');      // Metric 2 = Size, Object 2 = Boeing 747
+        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (3, 3, 6.25)');       // Metric 2 = Size, Object 2 = Superman
 });
 }
 
@@ -129,27 +139,27 @@ app.showAnimation = function () {
 
     var speed = function() {
 
-        var speedBase = 1500;
-        var distance = '-' + $(window).height() * (3/5) + 'px';
+        var speedSlow = 5000;
+        var distance = '-' + ($(window).height() - 200) + 'px';
 
         var animate = function(max, min) {
 
-            $('#animation').find('.ui-content').append("<div class='box' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i class=' fa fa-" +
+            $('#animation').find('.ui-content').append("<div class='speed-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i class=' fa fa-" +
 max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.value + " mph</p></div>");
-            $('#animation').find('.ui-content').append("<div class='box' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i class=' fa fa-" + min.icon + " fa-4 " + min.color +"'></i></p><p>" + min.name + "</p><p>" + min.value + " mph</p></div>");
+            $('#animation').find('.ui-content').append("<div class='speed-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i class=' fa fa-" + min.icon + " fa-4 " + min.color +"'></i></p><p>" + min.name + "</p><p>" + min.value + " mph</p></div>");
 
-            var valRatio = max.value / min.value;
-            var slowSpeed = speedBase * valRatio;
+            var valRatio = min.value / max.value;
+            var speedFast = speedSlow * valRatio;
 
             $('#left-object').transition({
                 y: distance,
                 easing: 'cubic-bezier(.24,.01,.47,1)',
-                duration: speedBase
+                duration: speedFast
             });
             $('#right-object').transition({
                 y: distance,
                 easing: 'cubic-bezier(.24,.01,.47,1)',
-                duration: slowSpeed
+                duration: speedSlow
             });
         }
 
@@ -169,6 +179,17 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
 
     var height = function () {
 
+        var animate = function(max, min) {
+
+            $('#animation').find('.ui-content').append("<div class='size-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i id='left-icon' class=' fa fa-" + min.icon + " " + min.color + "' style='font-size: " + min.value + "px'></i></p><p>" + min.name + "</p><p>" + min.value + " feet</p></div>");
+            $('#animation').find('.ui-content').append("<div class='size-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i id='right-icon' class='  fa fa-" + max.icon + " " + max.color + "' style='font-size: " + max.value + "px'></i></p><p>" + max.name + "</p><p>" + max.value + " feet</p></div>");
+        }
+
+        if (gObject1.value >= gObject2.value) {
+            animate(gObject1, gObject2)
+        } else {
+            animate(gObject2, gObject1)
+        }
     }
 
     if (gMetric.id == 1) {

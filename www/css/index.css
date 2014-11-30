@@ -2,10 +2,20 @@
     display: none;
 }
 
-.box {
+.speed-object {
     width: 25%;
+    height: 0;
+    overflow: visible;
     position: absolute;
-    bottom: -50px;
+    bottom: -1px;
+    text-align: center;
+}
+
+.size-object {
+    width: 25%;
+    height: 0;
+    overflow: visible;
+    position: absolute;
     text-align: center;
 }
 
@@ -55,4 +65,8 @@
 
 .grey {
     color: grey;
+}
+
+.black {
+    color: black;
 }
