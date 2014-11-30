@@ -175,19 +175,54 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
 
     var weight = function () {
 
+        var animate = function(max, min) {
+
+            var valRatio = min.value / max.value;
+            var degress = 0;
+
+            if(valRatio == 1) {
+                degrees = 0;
+            }
+
+            $('#animation').find('.ui-content').append("<div class='weight-bar'></div>");
+            $('#animation').find('.weight-bar').append("<div class='size-object' id='left-object'><p><i id='left-icon' class='fa-4 fa fa-" + max.icon + " " + max.color + "'></i></p><p>" + max.name + "</p><p>" + max.value + " lbs</p></div>");
+            $('#animation').find('.weight-bar').append("<div class='size-object' id='right-object'><p><i id='right-icon' class='fa-4 fa fa-" + min.icon + " " + min.color +"'></i></p><p>" + min.name + "</p><p>" + min.value + " lbs</p></div>");
+
+            var count = 0;
+            var seesaw = setInterval(function(){
+                if(count < 2) {
+                    $(".weight-bar").transition({ rotate: '60deg' }, 1000, 'cubic-bezier(.43,0,.45,1)');
+                    setTimeout(function(){
+                        $(".weight-bar").transition({ rotate: '-60deg' }, 1000, 'cubic-bezier(.43,0,.45,1)');
+                    }, 100);
+                } else {
+                    clearInterval(seesaw);
+                }
+                count++;
+            }, 200);
+        }
+
+        if (gObject1.value >= gObject2.value) {
+            animate(gObject1, gObject2)
+        } else {
+            animate(gObject2, gObject1)
+        }
     }
 
     var size = function () {
 
         var animate = function(max, min) {
 
-            valRatio = min.value / max.value;
-            sizeLarge = $(window).width()/3;
-            sizeSmall = sizeLarge * valRatio;
+            var valRatio = min.value / max.value;
+            var sizeLarge = $(window).width()/3;
+            var sizeSmall = sizeLarge * valRatio;
+
+            if (sizeSmall < 1) {
+                sizeSmall = 1;
+            }
 
             $('#animation').find('.ui-content').append("<div class='size-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i id='left-icon' class='fa fa-" + min.icon + " " + min.color + "' style='font-size: " + parseInt(sizeSmall) + "px'></i></p><p>" + min.name + "</p><p>" + min.value + " feet</p></div>");
-            $('#animation').find('.ui-content').append("<div class='size-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i id='right-icon' class='zoomTarget fa fa-" + max.icon + " " + max.color + "' style='font-size: " + parseInt(sizeLarge) + "px'></i></p><p>" + max.name + "</p><p>" + max.value + " feet</p></div>");
-
+            $('#animation').find('.ui-content').append("<div class='size-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i id='right-icon' class='fa fa-" + max.icon + " " + max.color + "' style='font-size: " + parseInt(sizeLarge) + "px'></i></p><p>" + max.name + "</p><p>" + max.value + " feet</p></div>");
 
             // zoom transition is initially set to 0 ms
             zoom.to({
@@ -292,7 +327,6 @@ $(window).on("orientationchange", function(event) {
         }
     }
 });
-
 
 var gObject1 = {};
 var gObject2 = {};

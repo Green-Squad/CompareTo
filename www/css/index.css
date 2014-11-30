@@ -12,25 +12,10 @@
 }
 
 .size-object {
-    width: 25%;
+    width: 40%;
     height: 0;
     overflow: visible;
     position: absolute;
-    text-align: center;
-}
-
-.zoomViewport {
-    width: 100%;
-    height: 500px;
-    border: 1px solid red;
-    -webkit-perspective: 1000;
-}
-
-.zoomContainer {
-    width: 100%;
-    height: 500px;
-    border: 1px solid blue;
-    -webkit-perspective: 1000;
 }
 
 .ui-content {
@@ -83,4 +68,26 @@
 
 .black {
     color: black;
+}
+
+.weight-bar {
+    margin: 150px auto;
+    position: relative;
+    width: 250px;
+    height: 10px;
+    background: #1e5c76;
+}
+
+.weight-bar #left-object {
+    position: absolute;
+    left: 0px;
+    top: -70px;
+    text-align: left;
+}
+
+.weight-bar #right-object {
+    position: absolute;
+    right: 0px;
+    top: -70px;
+    text-align: right;
 }
