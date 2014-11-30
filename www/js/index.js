@@ -177,7 +177,7 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
 
     }
 
-    var height = function () {
+    var size = function () {
 
         var animate = function(max, min) {
 
@@ -185,18 +185,19 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
             sizeLarge = $(window).width()/3;
             sizeSmall = sizeLarge * valRatio;
 
-            //$('#animation').find('.ui-content').append("<div class='zoomViewport'><div class='zoomContainer'></div></div>");
-            $('#animation').find('.ui-content').append("<div class='size-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i id='left-icon' class='zoomTarget fa fa-" + min.icon + " " + min.color + "' style='font-size: " + parseInt(sizeSmall) + "px'></i></p><p>" + min.name + "</p><p>" + min.value + " feet</p></div>");
-            $('#animation').find('.ui-content').append("<div class='size-object zoomTarget' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i id='right-icon' class='zoomTarget fa fa-" + max.icon + " " + max.color + "' style='font-size: " + parseInt(sizeLarge) + "px'></i></p><p>" + max.name + "</p><p>" + max.value + " feet</p></div>");
+            $('#animation').find('.ui-content').append("<div class='size-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i id='left-icon' class='fa fa-" + min.icon + " " + min.color + "' style='font-size: " + parseInt(sizeSmall) + "px'></i></p><p>" + min.name + "</p><p>" + min.value + " feet</p></div>");
+            $('#animation').find('.ui-content').append("<div class='size-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i id='right-icon' class='zoomTarget fa fa-" + max.icon + " " + max.color + "' style='font-size: " + parseInt(sizeLarge) + "px'></i></p><p>" + max.name + "</p><p>" + max.value + " feet</p></div>");
 
+
+            // zoom transition is initially set to 0 ms
             zoom.to({
                 element: document.querySelector( 'i#left-icon' )
             });
-            //$('body').css('transform', '800ms ease');
-            //$('body').css('-webkit-transform', '800ms ease');
 
+            // zoom transition is set to 1500 ms to show the zoom out animation
+            var TRANSITION_DURATION;
             setTimeout(function() {
-                var TRANSITION_DURATION = 1500;
+                TRANSITION_DURATION = 1500;
                 document.body.style.transition = 'transform '+ TRANSITION_DURATION +'ms ease';
                 document.body.style.OTransition = '-o-transform '+ TRANSITION_DURATION +'ms ease';
                 document.body.style.msTransition = '-ms-transform '+ TRANSITION_DURATION +'ms ease';
@@ -205,24 +206,13 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
                 zoom.out();
             }, 1500);
 
-            var TRANSITION_DURATION = 0;
+            // zoom transition is reset to 0 for next time the animation is run
+            TRANSITION_DURATION = 0;
             document.body.style.transition = 'transform '+ TRANSITION_DURATION +'ms ease';
             document.body.style.OTransition = '-o-transform '+ TRANSITION_DURATION +'ms ease';
             document.body.style.msTransition = '-ms-transform '+ TRANSITION_DURATION +'ms ease';
             document.body.style.MozTransition = '-moz-transform '+ TRANSITION_DURATION +'ms ease';
             document.body.style.WebkitTransition = '-webkit-transform '+ TRANSITION_DURATION +'ms ease';
-
-
-            //$('#left-icon').zoomTarget();
-            //$('#left-icon').click();
-
-            //$('#left-icon').zoomTo({targetsize:.8, duration:1});
-            //var transformMatrix = $('.zoomContainer').css('transform');
-            //$('.zoomContainer').css('transform', '');
-            //$('.zoomContainer').css('-webkit-transform', '');
-            //$('.zoomContainer').css('transform', transformMatrix);
-
-
         }
 
         if (gObject1.value >= gObject2.value) {
@@ -237,7 +227,7 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
     } else if (gMetric.id == 2) {
         weight();
     } else if (gMetric.id == 3) {
-        height();
+        size();
     }
 }
 
