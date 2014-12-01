@@ -353,7 +353,7 @@ function playAudio(audioName) {
 }
 
 function stopAudio() {
-    if(undefined != mediaPlayer) {
+    if(mediaPlayer != '') {
         mediaPlayer.stop();
     }
 }
