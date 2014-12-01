@@ -286,7 +286,7 @@ function init() {
     app.createTables();
     //app.seedTables();
     app.loadMetrics();
-    document.addEventListener("backbutton", onBackKeyDown, false);
+    //document.addEventListener("backbutton", onBackKeyDown, false);
 }
 
 $("#comparison-type").change(function() {
@@ -361,15 +361,9 @@ function stopAudio() {
     }
 }
 
-function onBackKeyDown() {
+$(document).on('pagebeforehide', '#animation', function(e, data){
     stopAudio();
-    if($.mobile.activePage.is('#home')) {
-        navigator.app.exitApp();
-    }
-    else {
-        navigator.app.backHistory()
-    }
-}
+});
 
 $('#delete-button').on('click', function(event) {
     window.sqlitePlugin.deleteDatabase("compareto.db");

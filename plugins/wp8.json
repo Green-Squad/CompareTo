@@ -13,6 +13,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"Notification\"><param name=\"wp-package\" value=\"Notification\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"File\"><param name=\"wp-package\" value=\"File\" /></feature>",
                             "count": 1
                         },
@@ -45,13 +49,16 @@
     },
     "installed_plugins": {
         "com.brodysoft.sqlitePlugin": {
-            "PACKAGE_NAME": "{9d012370-78ec-11e4-b332-a1433e02f9be}"
+            "PACKAGE_NAME": "{2ce62b40-78f5-11e4-9f02-9f41485e947f}"
+        },
+        "org.apache.cordova.dialogs": {
+            "PACKAGE_NAME": "{2ce62b40-78f5-11e4-9f02-9f41485e947f}"
         },
         "org.apache.cordova.file": {
-            "PACKAGE_NAME": "{9d012370-78ec-11e4-b332-a1433e02f9be}"
+            "PACKAGE_NAME": "{2ce62b40-78f5-11e4-9f02-9f41485e947f}"
         },
         "org.apache.cordova.media": {
-            "PACKAGE_NAME": "{9d012370-78ec-11e4-b332-a1433e02f9be}"
+            "PACKAGE_NAME": "{2ce62b40-78f5-11e4-9f02-9f41485e947f}"
         }
     },
     "dependent_plugins": {}
