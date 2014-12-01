@@ -52,7 +52,6 @@ app.seedTables = function() {
 
 app.onSuccess = function(tx, r) {
     console.log("success");
-    app.refresh();
 }
 
 app.onError = function(tx, e) {
@@ -74,6 +73,7 @@ app.loadMetrics = function() {
     }
 
     var metricItems = document.getElementById("comparison-type");
+    metricItems.innerHTML = "";
     var db = app.db;
     db.transaction(function(tx) {
         tx.executeSql("SELECT * FROM metrics", [],
@@ -386,6 +386,8 @@ $('#update-button').on('click', function(event) {
                 alert('There was an error updating the database. Please try again.')
             }
 
+            app.loadMetrics;
+
         }
     };
     window.sqlitePlugin.deleteDatabase("compareto.db");
@@ -452,7 +454,7 @@ $('#update-button').on('click', function(event) {
         errorCount++;
     }).always(complete);
 
-    app.loadMetrics();
+
 
 
 })
