@@ -354,18 +354,9 @@ function getAppPath() {
 }
 
 function playAudio(audioName) {
+    // WP8 Device Platform = Win32NT
     if(device.platform == 'Android') {
         mediaPlayer = new Media(getAppPath() + "audio/" + audioName + ".mp3",
-            function onSuccess() {
-                mediaPlayer.release();
-            },
-            function onError(e){
-                alert("error playing sound: " + JSON.stringify(e));
-            }
-        );
-        mediaPlayer.play();
-    } else {
-        mediaPlayer = new Media("/app/www/audio/" + audioName + ".mp3",
             function onSuccess() {
                 mediaPlayer.release();
             },
@@ -387,10 +378,6 @@ $(document).on('pagebeforehide', '#animation', function(e, data){
     stopAudio();
 });
 
-$('#delete-button').on('click', function(event) {
-    window.sqlitePlugin.deleteDatabase("compareto.db");
-})
-
 $('#update-button').on('click', function(event) {
 
     var complete = function() {
@@ -398,11 +385,21 @@ $('#update-button').on('click', function(event) {
         completeCount++;
 
         if (completeCount == 3) {
-
+            var alertMsg = '';
             if (successCount == 3) {
-                navigator.notification.alert('Successfully updated database.');
+                alertMsg = 'Successfully updated database.';
+                if(device.platform == 'Android') {
+                    navigator.notification.alert(alertMsg);
+                }   else {
+                    alert(alertMsg);
+                }
             } else {
-                navigator.notification.alert('There was an error updating the database. Please try again.');
+                alertMsg = 'There was an error updating the database. Please try again.';
+                if(device.platform == 'Android') {
+                    navigator.notification.alert('alertMsg');
+                } else {
+                    alert(alertMsg);
+                }
             }
 
             app.loadMetrics();
