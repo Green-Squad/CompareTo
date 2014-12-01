@@ -352,7 +352,11 @@ function getAppPath() {
 }
 
 function playAudio(audioName) {
-    mediaPlayer = new Media(getAppPath() + "audio/" + audioName + ".mp3");
+    if(device.platform == 'Android') {
+        mediaPlayer = new Media(getAppPath() + "audio/" + audioName + ".mp3");
+    } else {
+        mediaPlayer = new Media("audio/" + audioName + ".mp3");
+    }
     mediaPlayer.play();
 }
 
