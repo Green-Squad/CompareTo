@@ -66,6 +66,7 @@ app.loadMetrics = function() {
         option.text = row.name;
         option.value = row.id;
         metricItems.add(option);
+        $('#comparison-type').val("-1");
     }
 
     var renderMetrics = function (tx, res) {
@@ -88,7 +89,7 @@ app.loadObjects = function() {
 
     var addObjects = function(row) {
         var option1 = document.createElement("option");
-        option1.text = row.name; 
+        option1.text = row.name;
         option1.value = row.object_id;
 
         document.getElementById("object-1").add(option1);
@@ -98,6 +99,9 @@ app.loadObjects = function() {
         option2.value = row.object_id;
 
         document.getElementById("object-2").add(option2);
+
+        $('#object-1').val("-1");
+        $('#object-2').val("-1");
     }
 
     var renderObjects = function(tx, res) {
@@ -286,11 +290,9 @@ function init() {
     app.createTables();
     //app.seedTables();
     app.loadMetrics();
-    //document.addEventListener("backbutton", onBackKeyDown, false);
 }
 
 $("#comparison-type").change(function() {
-
     app.loadObjects();
 });
 
@@ -383,13 +385,6 @@ function stopAudio() {
 
 $(document).on('pagebeforehide', '#animation', function(e, data){
     stopAudio();
-});
-
-$('#comparison-type').on('click', function() {
-    var spanText = $('#comparison-type option:selected').text();
-    if (spanText != '') {
-        $("#comparison-type-button").find('span').text(spanText);
-    }
 });
 
 $('#delete-button').on('click', function(event) {
