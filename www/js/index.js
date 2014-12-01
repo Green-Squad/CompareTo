@@ -23,6 +23,7 @@ app.createTables = function() {
 app.seedTables = function() {
     var db = app.db;
     db.transaction(function(tx) {
+
         // Seeding metrics
         tx.executeSql('INSERT INTO metrics (id, name) VALUES (1, "Speed")');
         tx.executeSql('INSERT INTO metrics (id, name) VALUES (2, "Weight")');
@@ -59,6 +60,7 @@ app.onError = function(tx, e) {
 }
 
 app.loadMetrics = function() {
+    console.log("load metrics");
     var addMetrics = function (row) {
         var option = document.createElement("option");
         option.text = row.name;
@@ -71,7 +73,7 @@ app.loadMetrics = function() {
             addMetrics(res.rows.item(i));
         }
     }
-
+    $("#comparison-type-button").find('span').text("Choose a metric");
     var metricItems = document.getElementById("comparison-type");
     metricItems.innerHTML = "";
     var db = app.db;
@@ -107,8 +109,6 @@ app.loadObjects = function() {
 
     var metricID = $('#comparison-type').val();
 
-    document.getElementById("object-1").innerHTML = "<option value='' disabled>Choose an object to compare</option>";
-    document.getElementById("object-2").innerHTML = "<option value='' disabled>Choose an object to compare</option>";
     $("#object-1-button").find('span').text("Choose an object to compare");
     $("#object-2-button").find('span').text("Choose an object to compare");
 
@@ -386,7 +386,7 @@ $('#update-button').on('click', function(event) {
                 alert('There was an error updating the database. Please try again.')
             }
 
-            app.loadMetrics;
+            app.loadMetrics();
 
         }
     };
