@@ -108,9 +108,12 @@ app.loadObjects = function() {
     }
 
     var metricID = $('#comparison-type').val();
+    $('#object-1').html("");
+    $('#object-2').html("");
 
     $("#object-1-button").find('span').text("Choose an object to compare");
     $("#object-2-button").find('span').text("Choose an object to compare");
+
 
     if ($('#objects-container').hasClass('hidden')) {
         $('#objects-container').show();
@@ -280,7 +283,7 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
 
 function init() {
     app.openDb();
-    //app.createTables();
+    app.createTables();
     //app.seedTables();
     app.loadMetrics();
     document.addEventListener("backbutton", onBackKeyDown, false);
