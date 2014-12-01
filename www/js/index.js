@@ -353,11 +353,26 @@ function getAppPath() {
 
 function playAudio(audioName) {
     if(device.platform == 'Android') {
-        mediaPlayer = new Media(getAppPath() + "audio/" + audioName + ".mp3");
+        mediaPlayer = new Media(getAppPath() + "audio/" + audioName + ".mp3",
+            function onSuccess() {
+                mediaPlayer.release();
+            },
+            function onError(e){
+                alert("error playing sound: " + JSON.stringify(e));
+            }
+        );
+        mediaPlayer.play();
     } else {
-        mediaPlayer = new Media("audio/" + audioName + ".mp3");
+        mediaPlayer = new Media("/audio/" + audioName + ".mp3",
+            function onSuccess() {
+                mediaPlayer.release();
+            },
+            function onError(e){
+                alert("error playing sound: " + JSON.stringify(e));
+            }
+        );
+        mediaPlayer.play();
     }
-    mediaPlayer.play();
 }
 
 function stopAudio() {
