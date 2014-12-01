@@ -381,9 +381,9 @@ $('#update-button').on('click', function(event) {
         if (completeCount == 3) {
 
             if (successCount == 3) {
-                alert('Successfully updated database.')
+                navigator.notification.alert('Successfully updated database.');
             } else {
-                alert('There was an error updating the database. Please try again.')
+                navigator.notification.alert('There was an error updating the database. Please try again.');
             }
 
             app.loadMetrics();
@@ -453,9 +453,6 @@ $('#update-button').on('click', function(event) {
         console.log( "error" );
         errorCount++;
     }).always(complete);
-
-
-
 
 })
 
