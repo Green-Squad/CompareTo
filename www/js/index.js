@@ -365,7 +365,7 @@ function playAudio(audioName) {
         );
         mediaPlayer.play();
     } else {
-        mediaPlayer = new Media("/audio/" + audioName + ".mp3",
+        mediaPlayer = new Media("/app/www/audio/" + audioName + ".mp3",
             function onSuccess() {
                 mediaPlayer.release();
             },
