@@ -41,6 +41,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
                             "count": 1
                         },
@@ -50,10 +54,6 @@
                         },
                         {
                             "xml": "<feature name=\"Media\"><param name=\"android-package\" value=\"org.apache.cordova.media.AudioHandler\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -65,6 +65,9 @@
         "com.brodysoft.sqlitePlugin": {
             "PACKAGE_NAME": "com.greensquad.compareto"
         },
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "com.greensquad.compareto"
+        },
         "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "com.greensquad.compareto"
         },
@@ -72,9 +75,6 @@
             "PACKAGE_NAME": "com.greensquad.compareto"
         },
         "org.apache.cordova.media": {
-            "PACKAGE_NAME": "com.greensquad.compareto"
-        },
-        "org.apache.cordova.device": {
             "PACKAGE_NAME": "com.greensquad.compareto"
         }
     },
