@@ -290,6 +290,7 @@ function init() {
 }
 
 $("#comparison-type").change(function() {
+
     app.loadObjects();
 });
 
@@ -363,6 +364,13 @@ function stopAudio() {
 
 $(document).on('pagebeforehide', '#animation', function(e, data){
     stopAudio();
+});
+
+$('#comparison-type').on('click', function() {
+    var spanText = $('#comparison-type option:selected').text();
+    if (spanText != '') {
+        $("#comparison-type-button").find('span').text(spanText);
+    }
 });
 
 $('#delete-button').on('click', function(event) {
