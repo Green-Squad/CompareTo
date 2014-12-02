@@ -10,4 +10,19 @@
     <content src="index.html" />
     <access origin="*" />
     <preference name="DisallowOverscroll" value="true" />
+	
+	<platform name="android">
+		<icon src="www/res/android/icon-ldpi.png" density="ldpi" />
+		<icon src="www/res/android/icon-mdpi.png" density="mdpi" />
+		<icon src="www/res/android/icon-hdpi.png" density="hdpi" />
+		<icon src="www/res/android/icon-xhdpi.png" density="xhdpi" />
+	</platform>
+	
+	<platform name="wp8">
+        <icon src="www/res/wp8/icon.png" width="99" height="99" />
+		<!-- tile image -->
+        <icon src="www/res/wp8/Background.png" width="159" height="159" />
+		<!-- splash screen -->
+		<splash src="www/res/wp8/SplashScreenImage.jpg" width="768" height="1280"/>
+     </platform>
 </widget>
