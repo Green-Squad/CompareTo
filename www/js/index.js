@@ -398,7 +398,7 @@ $('#update-button').on('click', function(event) {
             } else {
                 alertMsg = 'There was an error updating the database. Please try again.';
                 if(device.platform == 'Android') {
-                    navigator.notification.alert('alertMsg');
+                    navigator.notification.alert(alertMsg);
                 } else {
                     alert(alertMsg);
                 }
