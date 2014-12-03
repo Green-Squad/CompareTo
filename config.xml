@@ -12,7 +12,7 @@
     <preference name="DisallowOverscroll" value="true" />
 	
 	<platform name="android">
-		<icon src="www/res/android/icon-ldpi.png" density="ldpi" />
+		<icon src="www/res/android/icon-mdpi.png" density="ldpi" />
 		<icon src="www/res/android/icon-mdpi.png" density="mdpi" />
 		<icon src="www/res/android/icon-hdpi.png" density="hdpi" />
 		<icon src="www/res/android/icon-xhdpi.png" density="xhdpi" />
