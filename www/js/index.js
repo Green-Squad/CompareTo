@@ -45,9 +45,9 @@ app.seedTables = function() {
         tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (2, 3, 235)');        // Metric 2 = Weight, Object 3 = Superman
 
         // Seeding metric_object size
-        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (3, 1, 7.08)');       // Metric 2 = Size, Object 1 = Bald Eagle
-        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (3, 2, 231.1)');      // Metric 2 = Size, Object 2 = Boeing 747
-        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (3, 3, 6.25)');       // Metric 2 = Size, Object 2 = Superman
+        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (3, 1, 7)');          // Metric 2 = Size, Object 1 = Bald Eagle
+        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (3, 2, 231)');        // Metric 2 = Size, Object 2 = Boeing 747
+        tx.executeSql('INSERT INTO metric_object (metric_id, object_id, value) VALUES (3, 3, 6)');          // Metric 2 = Size, Object 2 = Superman
 });
 }
 
@@ -288,7 +288,7 @@ max.icon + " fa-4' style='color:" + max.color + "'></i></p><p>" + max.name + "</
 function init() {
     app.openDb();
     app.createTables();
-    //app.seedTables();
+    app.seedTables();
     app.loadMetrics();
 }
 
