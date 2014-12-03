@@ -423,7 +423,7 @@ $('#update-button').on('click', function(event) {
         var errorCount = 0;
         var completeCount = 0;
 
-        $('#settings').find('.ui-content').append("<div class='center' id='loading'><img src='img/loading.gif' alt='Loading'><p>Updating database. Please wait.</p></div>");
+        $('#panel').find('.ui-content').append("<div class='center' id='loading'><img src='img/loading.gif' alt='Loading'><p>Updating database. Please wait.</p></div>");
 
         // metrics json
         $.getJSON("https://guarded-reef-6440.herokuapp.com/metrics.json", function (data) {

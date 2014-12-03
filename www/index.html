@@ -33,9 +33,9 @@
 
 <body>
     <section id="home" data-role="page" data-theme="f">
-        <div data-role="header" data-id="header" data-position="fixed" data-theme="f">
-            <h1>Compare To</h1>
-            <a href="#settings" class="ui-btn-right"><i class="fa fa-gear fa-1"></i></a>
+        <div data-role="header" data-id="header" data-position="fixed" data-theme="f" class="header">
+            <h1><a href="#panel" class="ui-btn"><i class="fa fa-bars fa-1"></i></a>
+            Compare To</h1>
         </div>
         <div role="main" class="ui-content">
             <form>
@@ -64,28 +64,29 @@
         </div>
     </section>
     <section id="animation" data-role="page" data-theme="f">
-        <div data-role="header" data-id="header" data-position="fixed" data-theme="f">
-            <h1>Compare To</h1>
-            <a href="#settings" class="ui-btn-right"><i class="fa fa-gear fa-1"></i></a>
+        <div data-role="header" data-id="header" data-position="fixed" data-theme="f" class="header">
+            <h1><a href="#panel" class="ui-btn"><i class="fa fa-bars fa-1"></i></a>
+                Compare To</h1>
         </div>
         <div role="main" class="ui-content">
         </div>
     </section>
-    <section id="settings" data-role="page" data-theme="f">
-        <div data-role="header" data-id="header" data-position="fixed" data-theme="f">
-            <h1>Compare To</h1>
-            <a href="#settings" class="ui-btn-right"><i class="fa fa-gear fa-1"></i></a>
+    <div data-role="panel" id="panel" data-display="overlay" data-theme="a">
+        <div data-role="content" class="ui-content">
+            <a data-role="button" id="update-button" data-theme="f">Update Database</a>
         </div>
-        <div role="main" class="ui-content">
-            <a data-role="button" id="update-button">Update Database</a>
-        </div>
-    </section>
+    </div>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" src="js/jquery.transit.min.js"></script>
     <script type="text/javascript" src="js/zoom.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
+    <script id="panel-init">
+        $(function() {
+            $("#panel").panel().enhanceWithin();
+        });
+    </script>
 </body>
 
 </html>

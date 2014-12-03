@@ -58,24 +58,13 @@
     font-size: 6em;
 }
 
-.red {
-    color: red;
+.header {
+    text-align: left;
 }
 
-.blue {
-    color: blue;
-}
-
-.green {
-    color: green;
-}
-
-.grey {
-    color: grey;
-}
-
-.black {
-    color: black;
+.header .ui-title {
+    text-align: left;
+    margin: 0;
 }
 
 .weight-bar {
