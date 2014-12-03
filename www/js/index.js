@@ -151,9 +151,9 @@ app.showAnimation = function () {
 
         var animate = function(max, min) {
 
-            $('#animation').find('.ui-content').append("<div class='speed-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i class=' fa fa-" +
-max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.value + " mph</p></div>");
-            $('#animation').find('.ui-content').append("<div class='speed-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i class=' fa fa-" + min.icon + " fa-4 " + min.color +"'></i></p><p>" + min.name + "</p><p>" + min.value + " mph</p></div>");
+            $('#animation').find('.ui-content').append("<div class='speed-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i class='fa fa-" +
+max.icon + " fa-4' style='color:" + max.color + "'></i></p><p>" + max.name + "</p><p>" + max.value + " mph</p></div>");
+            $('#animation').find('.ui-content').append("<div class='speed-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i class='fa fa-" + min.icon + " fa-4' style='color:" + min.color + "'></i></p><p>" + min.name + "</p><p>" + min.value + " mph</p></div>");
 
             playAudio('speed');
 
@@ -200,8 +200,8 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
             }
 
             $('#animation').find('.ui-content').append("<div class='weight-bar'></div>");
-            $('#animation').find('.weight-bar').append("<div class='weight-object' id='left-object'><p><i id='left-icon' class='fa-4 fa fa-" + max.icon + " " + max.color + "'></i></p><p>" + max.name + "</p><p>" + max.value + " lbs</p></div>");
-            $('#animation').find('.weight-bar').append("<div class='weight-object' id='right-object'><p><i id='right-icon' class='fa-4 fa fa-" + min.icon + " " + min.color +"'></i></p><p>" + min.name + "</p><p>" + min.value + " lbs</p></div>");
+            $('#animation').find('.weight-bar').append("<div class='weight-object' id='left-object'><p><i id='left-icon' class='fa-4 fa fa-" + max.icon + "' style='color:" + max.color + "'></i></p><p>" + max.name + "</p><p>" + max.value + " lbs</p></div>");
+            $('#animation').find('.weight-bar').append("<div class='weight-object' id='right-object'><p><i id='right-icon' class='fa-4 fa fa-" + min.icon +"' style='color:" + min.color + "'></i></p><p>" + min.name + "</p><p>" + min.value + " lbs</p></div>");
 
             playAudio('weight');
 
@@ -238,8 +238,8 @@ max.icon + " fa-4 " + max.color +"'></i></p><p>" + max.name + "</p><p>" + max.va
                 sizeSmall = 1;
             }
 
-            $('#animation').find('.ui-content').append("<div class='size-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i id='left-icon' class='fa fa-" + min.icon + " " + min.color + "' style='font-size: " + parseInt(sizeSmall) + "px'></i></p><p>" + min.name + "</p><p>" + min.value + " feet</p></div>");
-            $('#animation').find('.ui-content').append("<div class='size-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i id='right-icon' class='fa fa-" + max.icon + " " + max.color + "' style='font-size: " + parseInt(sizeLarge) + "px'></i></p><p>" + max.name + "</p><p>" + max.value + " feet</p></div>");
+            $('#animation').find('.ui-content').append("<div class='size-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i id='left-icon' class='fa fa-" + min.icon + "' style='font-size: " + parseInt(sizeSmall) + "px; color: " + min.color + "'></i></p><p>" + min.name + "</p><p>" + min.value + " feet</p></div>");
+            $('#animation').find('.ui-content').append("<div class='size-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i id='right-icon' class='fa fa-" + max.icon + "' style='font-size: " + parseInt(sizeLarge) + "px; color: " + max.color + "'></i></p><p>" + max.name + "</p><p>" + max.value + " feet</p></div>");
 
             playAudio('size');
 
