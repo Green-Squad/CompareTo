@@ -12,6 +12,23 @@ app.Subject = Backbone.Model.extend({});
 app.Metric = Backbone.Model.extend({});
 app.MetricSubjects = Backbone.Model.extend({});
 
+// Views
+app.dropdownView = Backbone.View.extend({
+  tagName: 'select',
+  render: function () {
+    //console.log(this);
+    var html = '';
+    // TODO move template out of render function
+    var template = _.template("<option><%= name %></option>");
+    this.collection.forEach(function (model) {
+      html += template(model.attributes);
+    });
+    this.$el.append(html);
+    $('.ui-content').append(this.$el);
+  }
+});
+
+
 // Collections
 app.Subjects = Backbone.Collection.extend({
   model: app.Subject,
@@ -86,6 +103,12 @@ app.MetricSubjects = Backbone.Collection.extend({
 app.subjects = new app.Subjects;
 app.metrics = new app.Metrics;
 app.metricSubjects = new app.MetricSubjects;
+
+app.subjectDropdown = new app.dropdownView({collection: app.subjects});
+app.subjectDropdown.render();
+
+app.metricDropdown = new app.dropdownView({collection: app.metrics});
+app.metricDropdown.render();
 
 app.loadMetrics = function () {
   console.log("load metrics");
