@@ -13,33 +13,74 @@ app.Metric = Backbone.Model.extend({});
 app.MetricSubjects = Backbone.Model.extend({});
 
 // Views
-app.dropdownView = Backbone.View.extend({
-  tagName: 'select',
+app.metricDropdownView = Backbone.View.extend({
+  events: {"change #metric-dropdown": "metricSelected"},
+  metricSelected: function () {
+    var metricName = $('#metric-dropdown').val();
+    var metricID = this.collection.findWhere({name: metricName}).id;
+    var subjectsArray = app.subjects.filterSubjects(metricID);
+    app.subjects.reset(subjectsArray);
+  },
   render: function () {
-    //console.log(this);
+    var html = '';
+    var select = document.createElement('select');
+    select.setAttribute('id', 'metric-dropdown');
+
+    // TODO move template out of render function
+    var template = _.template("<option><%= name %></option>");
+    this.collection.forEach(function (model) {
+      html += template(model.attributes);
+    });
+
+    $(select).append(html);
+    this.$el.append(select);
+    $('.ui-content').append(this.$el);
+  }
+});
+
+app.subjectDropdownView = Backbone.View.extend({
+  tagName: 'select',
+  randomID: function () {
+    return 'subject' + Math.floor((Math.random() * 1000000000));
+  },
+  initialize: function () {
+    this.id = this.randomID();
+    this.$el.attr('id', this.id);
+    $('.ui-content').append(this.$el);
+    this.listenTo(this.collection, 'reset', this.render);
+  },
+  render: function () {
     var html = '';
     // TODO move template out of render function
     var template = _.template("<option><%= name %></option>");
     this.collection.forEach(function (model) {
       html += template(model.attributes);
     });
-    this.$el.append(html);
-    $('.ui-content').append(this.$el);
+    $('#' + this.id).html(html);
+
   }
 });
-
 
 // Collections
 app.Subjects = Backbone.Collection.extend({
   model: app.Subject,
   localStorage: new Backbone.LocalStorage('subjects'),
+  filterSubjects: function (metricID) {
+    var metricSubjectsArray = app.metricSubjects.filterMetric(metricID);
+    var subjectsArray = metricSubjectsArray.map(function(obj) {
+      var subject_id = obj.attributes.subject_id;
+      return this.findWhere({id: subject_id});
+    }, this);
+    return subjectsArray;
+  },
   initialize: function () {
     this.fetch();
     if (this.length === 0) {
       this.reset([
         {name: 'Bald Eagle', icon: 'twitter', color: 'black'},
         {name: 'Boeing 747', icon: 'plane', color: 'grey'},
-        {name: 'Superman', icon: 'male', color: 'red'}
+        {name: 'Superman', icon: 'male', color: 'red'},
+        {name: 'Space Shuttle', icon: 'space-shuttle', color: 'black'}
       ]);
       this.each(function (subject) {
         subject.save();
@@ -69,6 +110,9 @@ app.Metrics = Backbone.Collection.extend({
 app.MetricSubjects = Backbone.Collection.extend({
   model: app.MetricSubjects,
   localStorage: new Backbone.LocalStorage('metric-subjects'),
+  filterMetric: function (metricID) {
+    return this.where({metric_id: metricID});
+  },
   initialize: function () {
     this.fetch();
     if (this.length === 0) {
@@ -81,6 +125,8 @@ app.MetricSubjects = Backbone.Collection.extend({
       var baldEagle = app.subjects.findWhere({name: 'Bald Eagle'});
       var boeing747 = app.subjects.findWhere({name: 'Boeing 747'});
       var superman = app.subjects.findWhere({name: 'Superman'});
+      var spaceShuttle = app.subjects.findWhere({name: 'Space Shuttle'});
+
       this.reset([
         {metric_id: speed.id, subject_id: baldEagle.id, value: 99},
         {metric_id: speed.id, subject_id: boeing747.id, value: 614},
@@ -88,6 +134,7 @@ app.MetricSubjects = Backbone.Collection.extend({
         {metric_id: weight.id, subject_id: baldEagle.id, value: 13},
         {metric_id: weight.id, subject_id: boeing747.id, value: 892450},
         {metric_id: weight.id, subject_id: superman.id, value: 235},
+        {metric_id: weight.id, subject_id: spaceShuttle.id, value: 230000},
         {metric_id: size.id, subject_id: baldEagle.id, value: 7},
         {metric_id: size.id, subject_id: boeing747.id, value: 231},
         {metric_id: size.id, subject_id: superman.id, value: 6}
@@ -100,15 +147,20 @@ app.MetricSubjects = Backbone.Collection.extend({
 });
 
 // Collection instances
-app.subjects = new app.Subjects;
 app.metrics = new app.Metrics;
+app.subjects = new app.Subjects;
 app.metricSubjects = new app.MetricSubjects;
 
-app.subjectDropdown = new app.dropdownView({collection: app.subjects});
-app.subjectDropdown.render();
-
-app.metricDropdown = new app.dropdownView({collection: app.metrics});
+app.metricDropdown = new app.metricDropdownView({collection: app.metrics});
 app.metricDropdown.render();
+
+app.subjectDropdown1 = new app.subjectDropdownView({collection: app.subjects});
+app.subjectDropdown1.render();
+
+app.subjectDropdown2 = new app.subjectDropdownView({collection: app.subjects});
+app.subjectDropdown2.render();
+// New code end
+
 
 app.loadMetrics = function () {
   console.log("load metrics");
@@ -203,7 +255,7 @@ app.showAnimation = function () {
     var animate = function (max, min) {
 
       $('#animation').find('.ui-content').append("<div class='speed-object' id='left-object' style='left: " + parseInt($(window).width() / 6) + "px;'><p><i class='fa fa-" +
-        max.icon + " fa-4' style='color:" + max.color + "'></i></p><p>" + max.name + "</p><p>" + max.value + " mph</p></div>");
+      max.icon + " fa-4' style='color:" + max.color + "'></i></p><p>" + max.name + "</p><p>" + max.value + " mph</p></div>");
       $('#animation').find('.ui-content').append("<div class='speed-object' id='right-object' style='right: " + parseInt($(window).width() / 6) + "px;'><p><i class='fa fa-" + min.icon + " fa-4' style='color:" + min.color + "'></i></p><p>" + min.name + "</p><p>" + min.value + " mph</p></div>");
 
       playAudio('speed');
